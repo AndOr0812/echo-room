@@ -1,26 +1,25 @@
-import React from 'react';
+import React from 'react'
 
 const audioTest = () => {
-  var audioContext = new (window.AudioContext || window.webkitAudioContext)();
-  // Create a buffer for the incoming sound content
-  var source = audioContext.createBufferSource();
-  // Create the XHR which will grab the audio contents
-  console.log(audioContext, source)
-}
+  var handleSuccess = function(stream) {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)()
+    const source = audioContext.createMediaStreamSource(stream)
+    const processor = audioContext.createScriptProcessor(1024, 1, 1)
 
+    source.connect(processor)
+    processor.connect(audioContext.destination)
+
+    processor.onaudioprocess = function(e) {
+      console.log(e.inputBuffer)
+    }
+  }
+
+  navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(handleSuccess)
+}
 
 const audio = ({ props }) => {
-  audioTest();
-  return (
-    <div>
-      I am here
-    </div>
-  );
+  audioTest()
+  return <div>I am here</div>
 }
 
-
-
-
-
-
-export default audio;
+export default audio
