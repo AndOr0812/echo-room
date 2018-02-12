@@ -10,7 +10,6 @@ const audioTest = () => {
     processor.connect(audioContext.destination)
 
     processor.onaudioprocess = function(e) {
-      // Do something with the data, i.e Convert this to WAV
       console.log(e.inputBuffer)
     }
   }
