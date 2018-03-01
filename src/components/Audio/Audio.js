@@ -22,16 +22,10 @@ const audioTest = () => {
       let reader = new FileReader()
       reader.onload = function() {
         let file = callback(reader.result) // file is created. TODO: send to the server
-        // var a = window.document.createElement('a')
-        // a.href = URL.createObjectURL(file)
-        // a.download = 'audio.webm'
-        // document.body.appendChild(a)
-        // a.click()
-        // document.body.removeChild(a)
         const formData = new FormData()
         formData.append('audio-recording', file)
         axios
-          .post('https://localhost:8080/upload', formData, {
+          .post('https://api.echoroom.io:8080/upload', formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
             }
