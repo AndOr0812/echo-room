@@ -31,7 +31,7 @@ const audioTest = () => {
         const formData = new FormData()
         formData.append('audio-recording', file)
         axios
-          .post('http://localhost:3000/upload', formData, {
+          .post('https://localhost:8080/upload', formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
             }
