@@ -1,20 +1,9 @@
 import React from 'react'
 // import socket from '../../socket'
+import axios from 'axios'
 
 const audioTest = () => {
   var handleSuccess = function(stream) {
-    // const audioContext = new (window.AudioContext ||
-    //   window.webkitAudioContext)()
-    // const source = audioContext.createMediaStreamSource(stream)
-    // const processor = audioContext.createScriptProcessor(1024, 1, 1)
-
-    // source.connect(processor)
-    // processor.connect(audioContext.destination)
-
-    // processor.onaudioprocess = function(e) {
-    //   console.log(e.inputBuffer)
-    //   socket.emit('transmitAudio', 'audio sample')
-    // }
     let audioArray = []
     const mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' })
     console.log('recording started')
@@ -33,12 +22,22 @@ const audioTest = () => {
       let reader = new FileReader()
       reader.onload = function() {
         let file = callback(reader.result) // file is created. TODO: send to the server
-        var a = window.document.createElement('a')
-        a.href = URL.createObjectURL(file)
-        a.download = 'audio.webm'
-        document.body.appendChild(a)
-        a.click()
-        document.body.removeChild(a)
+        // var a = window.document.createElement('a')
+        // a.href = URL.createObjectURL(file)
+        // a.download = 'audio.webm'
+        // document.body.appendChild(a)
+        // a.click()
+        // document.body.removeChild(a)
+        const formData = new FormData()
+        formData.append('audio-recording', file)
+        axios
+          .post('http://localhost:3000/upload', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          })
+          .then(response => console.log(response))
+          .catch(error => console.error(error))
       }
       reader.readAsDataURL(blob)
     }
