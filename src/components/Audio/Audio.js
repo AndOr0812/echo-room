@@ -22,6 +22,32 @@ const audioTest = () => {
     mediaRecorder.ondataavailable = function(evt) {
       audioArray.push(evt.data)
       console.log(audioArray.length, evt.data)
+      bufferToDataUrl(dataUrlToFile)
+    }
+
+
+    function bufferToDataUrl(callback) {
+      let blob = new Blob(audioArray, {
+        type: 'audio/webm'
+      })
+
+      let reader = new FileReader()
+      reader.onload = function() {
+        let file = callback(reader.result) // file is created. TODO: send to the server
+      }
+      reader.readAsDataURL(blob)
+    }
+
+    // returns file, that we can send to the server.
+    function dataUrlToFile(dataUrl) {
+      const binary = atob(dataUrl.split(',')[1]),
+        data = []
+
+      for (var i = 0; i < binary.length; i++) data.push(binary.charCodeAt(i))
+
+      return new File([new Uint8Array(data)], 'audio-buffer.webm', {
+        type: 'audio/webm'
+      })
     }
 
   }
