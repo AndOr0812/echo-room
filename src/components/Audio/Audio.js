@@ -25,7 +25,7 @@ const audioTest = () => {
         const formData = new FormData()
         formData.append('audio-recording', file)
         axios
-          .post('https://api.echoroom.io:8080/upload', formData, {
+          .post('https://api.echoroom.io/upload', formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
             }
