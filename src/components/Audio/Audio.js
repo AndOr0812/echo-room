@@ -25,7 +25,6 @@ const audioTest = () => {
       bufferToDataUrl(dataUrlToFile)
     }
 
-
     function bufferToDataUrl(callback) {
       let blob = new Blob(audioArray, {
         type: 'audio/webm'
@@ -34,6 +33,12 @@ const audioTest = () => {
       let reader = new FileReader()
       reader.onload = function() {
         let file = callback(reader.result) // file is created. TODO: send to the server
+        var a = window.document.createElement('a')
+        a.href = URL.createObjectURL(file)
+        a.download = 'audio.webm'
+        document.body.appendChild(a)
+        a.click()
+        document.body.removeChild(a)
       }
       reader.readAsDataURL(blob)
     }
@@ -49,7 +54,6 @@ const audioTest = () => {
         type: 'audio/webm'
       })
     }
-
   }
   navigator.mediaDevices
     .getUserMedia({ audio: true })
